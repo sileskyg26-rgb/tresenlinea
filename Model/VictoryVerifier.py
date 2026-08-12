@@ -24,3 +24,7 @@ class VictoryVerifier(IGameRule):
             return True
 
         return False
+
+    # Spanish method alias expected by GameManager
+    def verificar(self, board):
+        return self.verify(board)
