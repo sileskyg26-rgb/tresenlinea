@@ -6,25 +6,25 @@ class VictoryVerifier(IGameRule):
         cells = board.get_cells()
         
         for row in range(3):
-            if (cells[row][0].simbolo == cells[row][1].simbolo == cells[row][2].simbolo 
-                and not cells[row][0].estaVacia()):
+            if (cells[row][0].symbol == cells[row][1].symbol == cells[row][2].symbol 
+                and not cells[row][0].is_empty()):
                 return True
 
         for col in range(3):
-            if (cells[0][col].simbolo == cells[1][col].simbolo == cells[2][col].simbolo 
-                and not cells[0][col].estaVacia()):
+            if (cells[0][col].symbol == cells[1][col].symbol == cells[2][col].symbol 
+                and not cells[0][col].is_empty()):
                 return True
 
-        if (cells[0][0].simbolo == cells[1][1].simbolo == cells[2][2].simbolo 
-            and not cells[0][0].estaVacia()):
+        if (cells[0][0].symbol == cells[1][1].symbol == cells[2][2].symbol 
+            and not cells[0][0].is_empty()):
             return True
             
-        if (cells[0][2].simbolo == cells[1][1].simbolo == cells[2][0].simbolo 
-            and not cells[0][2].estaVacia()):
+        if (cells[0][2].symbol == cells[1][1].symbol == cells[2][0].symbol 
+            and not cells[0][2].is_empty()):
             return True
 
         return False
 
-    # Spanish method alias expected by GameManager
+    # Backwards-compatible Spanish alias
     def verificar(self, board):
         return self.verify(board)

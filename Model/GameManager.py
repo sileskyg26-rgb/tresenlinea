@@ -35,14 +35,25 @@ class GameManager:
         print("Match started. Good luck!")
 
     def update_state(self, board):
-        if self._victory_rule.verificar(board):
-            self._state = "VICTORIA"
-            return True
+        # Use English-friendly API if available, fall back to Spanish aliases
+        if hasattr(self._victory_rule, 'verify'):
+            if self._victory_rule.verify(board):
+                self._state = "VICTORIA"
+                return True
+        elif hasattr(self._victory_rule, 'verificar'):
+            if self._victory_rule.verificar(board):
+                self._state = "VICTORIA"
+                return True
         
-        if self._draw_rule.verificar(board):
-            self._state = "EMPATE"
-            return True
-            
+        if hasattr(self._draw_rule, 'verify'):
+            if self._draw_rule.verify(board):
+                self._state = "EMPATE"
+                return True
+        elif hasattr(self._draw_rule, 'verificar'):
+            if self._draw_rule.verificar(board):
+                self._state = "EMPATE"
+                return True
+                
         return False
 
     def restart(self):

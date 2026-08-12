@@ -40,8 +40,18 @@ class Game:
 
     # --- METHODS---
     def start(self):
-        self._board.inicializar()
-        self._history.limpiar()
+        # Normalize to English API
+        if hasattr(self._board, 'reset'):
+            self._board.reset()
+        elif hasattr(self._board, 'inicializar'):
+            self._board.inicializar()
+
+        if self._history is not None:
+            if hasattr(self._history, 'clear_history'):
+                self._history.clear_history()
+            elif hasattr(self._history, 'limpiar'):
+                self._history.limpiar()
+
         self._game_manager.start_match()
         print("Welcome to Tic-Tac-Toe!")
 
@@ -51,23 +61,57 @@ class Game:
         while self._game_manager.get_state() == "EN_CURSO":
             print(self._board)
             
-            current_player = self._turn_manager.obtenerJugadorActual()
-            print(f"Turn of player: {current_player.nombre} ({current_player.simbolo})")
+            # Use English API from TurnManager/Player
+            current_player = self._turn_manager.get_current_player()
+            # Use getters for name and symbol
+            try:
+                player_name = current_player.get_name()
+            except AttributeError:
+                player_name = getattr(current_player, 'nombre', 'Player')
+            try:
+                player_symbol = current_player.get_symbol()
+            except AttributeError:
+                player_symbol = getattr(current_player, 'simbolo', None)
+
+            print(f"Turn of player: {player_name} ({player_symbol})")
             
             try:
-                movement = current_player.realizarMovimiento(self._board)
-                
-                # Validar y colocar en el tablero
-                if self._board.validarMovimiento(movement):
-                    self._board.colocarFicha(movement)
-                    self._history.agregarMovimiento(movement)
-
-                    if self._game_manager.update_state(self._board):
-                        break    
-
-                    self._turn_manager.siguienteTurno()
+                # Ask strategy for move — prefer English API
+                strategy = current_player.get_strategy()
+                if hasattr(strategy, 'execute_move'):
+                    movement = strategy.execute_move(current_player, self._board)
+                elif hasattr(current_player, 'realizarMovimiento'):
+                    movement = current_player.realizarMovimiento(self._board)
+                elif hasattr(strategy, 'ejecutarMovimiento'):
+                    movement = strategy.ejecutarMovimiento(current_player, self._board)
                 else:
-                    print("Invalid movement. The cell is already occupied or out of bounds.")
+                    raise AttributeError('No valid movement method found')
+                
+                # Validate and place on board using Board's API
+                if movement is None:
+                    print('No movement returned by strategy')
+                else:
+                    row, col = movement
+                    if hasattr(self._board, 'place_symbol'):
+                        valid = self._board.place_symbol(row, col, player_symbol)
+                    elif hasattr(self._board, 'colocarFicha'):
+                        valid = self._board.colocarFicha(movement)
+                    else:
+                        valid = False
+
+                    if valid:
+                        if self._history is not None:
+                            if hasattr(self._history, 'add_match'):
+                                self._history.add_match(movement)
+                            elif hasattr(self._history, 'agregarMovimiento'):
+                                self._history.agregarMovimiento(movement)
+
+                        if self._game_manager.update_state(self._board):
+                            break
+
+                        self._turn_manager.next_turn()
+                    else:
+                        print("Invalid movement. The cell is already occupied or out of bounds.")
             except Exception as e:
                 print(f"Error during movement: {e}")
 
@@ -77,8 +121,12 @@ class Game:
     def finish(self):
         state = self._game_manager.get_state()
         if state == "VICTORIA":
-            current_player = self._turn_manager.obtenerJugadorActual()
-            print(f"The game is over! Winner: {current_player.nombre}")
+            current_player = self._turn_manager.get_current_player()
+            try:
+                name = current_player.get_name()
+            except AttributeError:
+                name = getattr(current_player, 'nombre', 'Player')
+            print(f"The game is over! Winner: {name}")
         elif state == "EMPATE":
             print("The game ended in a draw!")
         
