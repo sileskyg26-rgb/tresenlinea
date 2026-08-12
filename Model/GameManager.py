@@ -46,12 +46,10 @@ class GameManager:
         return False
 
     def restart(self):
-        # Reinicia el estado para una nueva partida
         self._state = "EN_CURSO"
         print("Match restarted.")
 
     def finish(self):
-        # Finaliza la partida
         self._state = "FINALIZADO"
         print("Match finished.")
 
