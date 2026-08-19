@@ -29,39 +29,28 @@ class GameManager:
     def set_draw_rule(self, draw_rule):
         self._draw_rule = draw_rule
 
-    # --- METHODS---
+    # --- METHODS ---
     def start_match(self):
-        self._state = "EN_CURSO"
+        self._state = "IN_PROGRESS"
         print("Match started. Good luck!")
 
     def update_state(self, board):
-        # Use English-friendly API if available, fall back to Spanish aliases
-        if hasattr(self._victory_rule, 'verify'):
-            if self._victory_rule.verify(board):
-                self._state = "VICTORIA"
-                return True
-        elif hasattr(self._victory_rule, 'verificar'):
-            if self._victory_rule.verificar(board):
-                self._state = "VICTORIA"
-                return True
+        if self._victory_rule.verify(board):
+            self._state = "WIN"
+            return True
         
-        if hasattr(self._draw_rule, 'verify'):
-            if self._draw_rule.verify(board):
-                self._state = "EMPATE"
-                return True
-        elif hasattr(self._draw_rule, 'verificar'):
-            if self._draw_rule.verificar(board):
-                self._state = "EMPATE"
-                return True
+        if self._draw_rule.verify(board):
+            self._state = "DRAW"
+            return True
                 
         return False
 
     def restart(self):
-        self._state = "EN_CURSO"
+        self._state = "IN_PROGRESS"
         print("Match restarted.")
 
     def finish(self):
-        self._state = "FINALIZADO"
+        self._state = "FINISHED"
         print("Match finished.")
 
     def get_state_info(self):

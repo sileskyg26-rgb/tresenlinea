@@ -1,4 +1,4 @@
-from Model.Player import Player
+#from Model.Player import Player
 from View.ConsoleView import ConsoleView
 from controller.GameController import GameController
 from Model.HumanStrategy import HumanStrategy
