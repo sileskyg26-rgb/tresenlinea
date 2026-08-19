@@ -24,6 +24,10 @@ class Board:
                     return False
         return True
 
+    # Spanish alias for is_full
+    def estalleno(self) -> bool:
+        return self.is_full()
+
     def place_symbol(self, row, col, symbol):
         if 0 <= row < 3 and 0 <= col < 3:
             if self._cells[row][col].is_empty():

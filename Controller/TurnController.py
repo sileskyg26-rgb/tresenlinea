@@ -5,13 +5,13 @@ class TurnController:
         self._turn_manager = TurnManager(players)
 
     def current_player(self):
-        return self._turn_manager.obtenerJugadorActual()
+        return self._turn_manager.get_current_player()
 
     def next_turn(self):
-        self._turn_manager.siguienteTurno()
+        self._turn_manager.next_turn()
 
     def reset(self):
-        self._turn_manager.reiniciar()
+        self._turn_manager.reset()
 
     def get_turn_manager(self):
         return self._turn_manager

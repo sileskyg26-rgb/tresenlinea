@@ -12,38 +12,38 @@ class GameController:
         self._turn_manager = TurnManager(players)
         self._game = Game(self._game_manager, self._turn_manager, self._board, None)
 
-        # Se asignan las reglas reales del juego
+        # Assign actual game rules
         self._game_manager.set_victory_rule(VictoryVerifier())
         self._game_manager.set_draw_rule(DrawVerifier())
 
     def start(self):
         self._board.reset()
-        self._turn_manager.reiniciar()
+        self._turn_manager.reset()
         self._game_manager.start_match()
         return self._game
 
     def play_turn(self):
-        player = self._turn_manager.obtenerJugadorActual()
+        player = self._turn_manager.get_current_player()
 
-        # Obtener movimiento desde la estrategia
+        # Get move from strategy
         strategy = player.get_strategy()
         if hasattr(strategy, "execute_move"):
             move = strategy.execute_move(player, self._board)
         elif hasattr(strategy, "ejecutarMovimiento"):
             move = strategy.ejecutarMovimiento(player, self._board)
         else:
-            raise AttributeError("La estrategia no define un movimiento válido.")
+            raise AttributeError("Strategy does not define a valid move method.")
 
         if move is None:
-            return {"ok": False, "message": "No hay movimientos disponibles."}
+            return {"ok": False, "message": "No moves available."}
 
         row, col = move
 
-        # Validar y ubicar ficha
+        # Validate and place symbol
         if self._board.place_symbol(row, col, player.get_symbol()):
             self._game_manager.update_state(self._board)
 
-            # Estado final
+            # Final states
             if self._game_manager.get_state() == "VICTORIA":
                 return {
                     "ok": True,
@@ -60,8 +60,8 @@ class GameController:
                     "board": self._board.get_cells()
                 }
 
-            # Si sigue en curso, cambia de turno
-            self._turn_manager.siguienteTurno()
+            # If still in progress, advance turn
+            self._turn_manager.next_turn()
             return {
                 "ok": True,
                 "winner": None,
@@ -69,7 +69,7 @@ class GameController:
                 "board": self._board.get_cells()
             }
 
-        return {"ok": False, "message": "Movimiento inválido."}
+        return {"ok": False, "message": "Invalid move."}
 
     def get_board(self):
         return self._board

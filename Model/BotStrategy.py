@@ -9,7 +9,10 @@ class BotStrategy(IStrategy):
         
         for row in range(3):
             for col in range(3):
-                if cells[row][col].estaVacia():
+                # Prefer standard English API
+                if hasattr(cells[row][col], 'is_empty') and cells[row][col].is_empty():
+                    empty_cells.append((row, col))
+                elif hasattr(cells[row][col], 'estaVacia') and cells[row][col].estaVacia():
                     empty_cells.append((row, col))
                     
         if empty_cells:
