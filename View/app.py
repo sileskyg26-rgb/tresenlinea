@@ -2,7 +2,6 @@ import sys
 import time
 
 import pygame
-
 from Model.Board import Board
 from Model.Symbol import Symbol
 from Model.Player import Player
