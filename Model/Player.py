@@ -26,13 +26,3 @@ class Player:
 
     def set_strategy(self, strategy):
         self._strategy = strategy
-
-    # --- METHODS ---
-    def hacerMovimiento(self, board):
-        return self._strategy.ejecutarMovimiento(self, board)
-
-    def obtenerSimbolo(self):
-        return self._symbol
-
-    def obtenerEstrategia(self):
-        return self._strategy

@@ -1,3 +1,3 @@
 class InvalidMoveException(Exception):
-    def __init__(self, message="Movimiento inválido"):
+    def __init__(self, message="Invalid move"):
         super().__init__(message)

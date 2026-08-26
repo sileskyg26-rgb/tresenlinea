@@ -33,3 +33,16 @@ class Board:
         for row in range(3):
             for col in range(3):
                 self._cells[row][col].clear()
+
+    def __str__(self):
+            lines = []
+            lines.append("    0   1   2")
+            lines.append("  +---+---+---+")
+            for row in range(3):
+                row_vals = []
+                for col in range(3):
+                    sym = self._cells[row][col].get_symbol()
+                    row_vals.append(str(sym) if sym is not None else " ")
+                lines.append(f"{row} | {row_vals[0]} | {row_vals[1]} | {row_vals[2]} |")
+                lines.append("  +---+---+---+")
+            return "\n".join(lines)
