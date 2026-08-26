@@ -1,9 +1,3 @@
-"""
-Widgets de interfaz con estética de panel de control cuántico:
-botones con esquinas "cortadas" (chamfer), bordes de circuito y
-glow al pasar el mouse.
-"""
-
 import math
 
 import pygame

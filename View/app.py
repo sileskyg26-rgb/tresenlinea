@@ -1,21 +1,3 @@
-"""
-App principal de la interfaz gráfica (pygame).
-
-Reutiliza tal cual el backend ya existente (Model/*): Board, Player,
-Symbol, TurnManager, MatchHistory, GameManager, VictoryVerifier,
-DrawVerifier, HumanStrategy y BotStrategy. La vista NO reimplementa
-reglas del juego: solo dibuja el estado y traduce clics de mouse en
-llamadas a `board.place_symbol(...)`, igual que el bucle de main.py
-traduce `strategy.execute_move(...)` a esa misma llamada.
-
-Para el jugador humano, en vez de invocar HumanStrategy.execute_move
-(que bloquea con input() por consola), la vista captura el clic sobre
-la celda y coloca el símbolo directamente sobre el tablero -- el mismo
-punto de entrada que usa main.py tras obtener la jugada.
-Para el bot, sí se usa BotStrategy.execute_move tal cual, porque no
-depende de la consola.
-"""
-
 import sys
 import time
 

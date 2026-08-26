@@ -1,9 +1,3 @@
-"""
-Tema visual: futurista / sci-fi / cuántico.
-Toda la paleta de colores, tamaños y fuentes vive aquí para que
-el resto de la vista sea puramente de dibujo.
-"""
-
 import pygame
 
 # --- Paleta -----------------------------------------------------------

@@ -1,11 +1,3 @@
-"""
-Renderizado del tablero de Tic-Tac-Toe con estética cuántica:
-- Grid tipo circuito impreso con nodos en las intersecciones.
-- X dibujada como dos rayos de energía cian que se cruzan.
-- O dibujada como un anillo de luz blanco/azulado con núcleo brillante.
-- Animación de aparición ("materialización") al colocar una ficha.
-"""
-
 import math
 
 import pygame

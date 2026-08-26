@@ -1,9 +1,3 @@
-"""
-Efectos visuales reutilizables: fondo de "circuitos" animado,
-sistema de partículas cuánticas y helpers de glow (resplandor)
-para dibujar líneas / círculos con halo de luz.
-"""
-
 import math
 import random
 
