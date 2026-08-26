@@ -9,11 +9,11 @@ import random
 from typing import List, Tuple, Optional
 import numpy as np
 
-from Model.IQuantumStrategy import IQuantumStrategy
+from Model.QuantumBot.IQuantumStrategy import IQuantumStrategy
 from Model.Symbol import Symbol
-from Model.QuantumState import QuantumState
-from Model.QuantumBoardAnalyzer import QuantumBoardAnalyzer
-from Model.QuantumMinimaxEngine import QuantumMinimaxEngine
+from Model.QuantumBot.QuantumState import QuantumState
+from Model.QuantumBot.QuantumBoardAnalyzer import QuantumBoardAnalyzer
+from Model.QuantumBot.QuantumMinimaxEngine import QuantumMinimaxEngine
 
 
 class QuantumBotStrategy(IQuantumStrategy):

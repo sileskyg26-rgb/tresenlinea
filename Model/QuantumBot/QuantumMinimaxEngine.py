@@ -3,7 +3,7 @@ import numpy as np
 
 from Model.Symbol import Symbol
 from Model.Board import Board
-from Model.QuantumBoardAnalyzer import QuantumBoardAnalyzer
+from Model.QuantumBot.QuantumBoardAnalyzer import QuantumBoardAnalyzer
 
 
 class QuantumMinimaxEngine:
