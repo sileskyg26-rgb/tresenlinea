@@ -45,14 +45,12 @@ class NeonButton:
         color = self.accent if self.enabled else theme.TEXT_DIM
         points = self._chamfered_points(self.rect)
 
-        # Relleno de panel semitransparente
         panel = pygame.Surface(self.rect.size, pygame.SRCALPHA)
         local_points = [(px - self.rect.x, py - self.rect.y) for px, py in points]
         fill_alpha = 60 if self.hovered else 28
         pygame.draw.polygon(panel, (*color, fill_alpha), local_points)
         surface.blit(panel, self.rect.topleft)
 
-        # Borde con leve glow si hay hover
         glow_strength = 1.0 if self.hovered else 0.0
         pulse = (math.sin(self._pulse * 4) + 1) / 2 if self.hovered else 0
         border_width = 2 + int(glow_strength * pulse)
@@ -64,7 +62,6 @@ class NeonButton:
 
         pygame.draw.polygon(surface, color, points, width=max(2, border_width))
 
-        # Pequeñas marcas de "circuito" en las esquinas
         x, y, w, h = self.rect
         tick = 6
         pygame.draw.line(surface, color, (x + tick, y), (x, y + tick), 1)

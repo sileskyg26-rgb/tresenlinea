@@ -1,6 +1,5 @@
 import pygame
 
-# --- Paleta -----------------------------------------------------------
 BG_DARK = (10, 22, 40)          # #0a1628 - fondo azul marino oscuro
 BG_DARKER = (6, 14, 28)         # variante aún más oscura (para paneles)
 CYAN = (0, 217, 255)            # #00d9ff - cian brillante (circuitos / X)
@@ -16,7 +15,6 @@ WIN_GOLD = (255, 210, 90)
 DRAW_PURPLE = (170, 120, 255)
 DANGER = (255, 90, 110)
 
-# --- Ventana ------------------------------------------------------------
 WINDOW_WIDTH = 900
 WINDOW_HEIGHT = 700
 FPS = 60
@@ -32,11 +30,7 @@ _fonts_cache = {}
 
 
 def get_font(name, size, bold=False):
-    """
-    Devuelve una fuente 'técnica' cacheada. Intenta usar fuentes
-    monoespaciadas del sistema (look de consola/HUD); si no existen,
-    recurre a la fuente monoespaciada por defecto de pygame.
-    """
+    
     key = (name, size, bold)
     if key in _fonts_cache:
         return _fonts_cache[key]

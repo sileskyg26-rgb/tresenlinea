@@ -7,15 +7,11 @@ from View.effects import draw_glow_line, draw_glow_circle
 
 SYMBOL_APPEAR_TIME = 0.28  # segundos que tarda una ficha en "materializarse"
 
-
 def ease_out_back(t):
-    """Pequeño 'overshoot' para que la ficha aparezca con un ligero rebote,
-    reforzando la sensación de energía condensándose de golpe."""
     c1 = 1.70158
     c3 = c1 + 1
     t = max(0.0, min(1.0, t))
     return 1 + c3 * (t - 1) ** 3 + c1 * (t - 1) ** 2
-
 
 class BoardView:
     def __init__(self, rect):
@@ -37,7 +33,6 @@ class BoardView:
             return int(row), int(col)
         return None
 
-    # ------------------------------------------------------------------ #
     def draw_grid(self, surface, time_elapsed):
         r = self.rect
         # Panel de fondo del tablero, ligeramente más oscuro que el resto
@@ -45,14 +40,12 @@ class BoardView:
         pygame.draw.rect(panel, (*theme.BG_DARKER, 160), panel.get_rect(), border_radius=10)
         surface.blit(panel, r.topleft)
 
-        # Líneas internas del grid con glow
         for i in (1, 2):
             x = r.x + i * self.cell
             draw_glow_line(surface, theme.CYAN, (x, r.y + 6), (x, r.bottom - 6), 2, glow_layers=3, max_extra=8)
             y = r.y + i * self.cell
             draw_glow_line(surface, theme.CYAN, (r.x + 6, y), (r.right - 6, y), 2, glow_layers=3, max_extra=8)
 
-        # Marco exterior tipo circuito con esquinas marcadas
         pygame.draw.rect(surface, theme.CYAN_SOFT, r, width=2, border_radius=10)
         corner = 16
         for cx, cy, dx, dy in [
@@ -64,7 +57,6 @@ class BoardView:
             pygame.draw.line(surface, theme.CYAN, (cx, cy), (cx + dx * corner, cy), 3)
             pygame.draw.line(surface, theme.CYAN, (cx, cy), (cx, cy + dy * corner), 3)
 
-        # Nodos pulsantes en las intersecciones internas
         for i in (1, 2):
             for j in (1, 2):
                 x = r.x + i * self.cell
@@ -79,7 +71,6 @@ class BoardView:
         pygame.draw.rect(hover_surf, (*theme.CYAN, 120), hover_surf.get_rect(), width=2, border_radius=6)
         surface.blit(hover_surf, rect.topleft)
 
-    # ------------------------------------------------------------------ #
     def draw_symbol(self, surface, row, col, symbol_str, appear_elapsed):
         rect = self.cell_rect(row, col)
         cx, cy = rect.center
@@ -110,7 +101,6 @@ class BoardView:
             temp, theme.CYAN, (cx + half, cy - half), (cx - half, cy + half),
             thickness, glow_layers=5, max_extra=16,
         )
-        # núcleo blanco muy brillante en el centro de cada trazo
         pygame.draw.line(temp, theme.WHITE_GLOW, (cx - half, cy - half), (cx + half, cy + half), max(1, thickness - 3))
         pygame.draw.line(temp, theme.WHITE_GLOW, (cx + half, cy - half), (cx - half, cy + half), max(1, thickness - 3))
 
@@ -129,7 +119,6 @@ class BoardView:
         temp.set_alpha(int(255 * alpha_fade))
         surface.blit(temp, (0, 0))
 
-    # ------------------------------------------------------------------ #
     def draw_winning_line(self, surface, line_cells, time_elapsed):
         """line_cells: lista de (row, col) de las 3 celdas ganadoras, en orden."""
         if not line_cells:

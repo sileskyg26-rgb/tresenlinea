@@ -10,8 +10,6 @@ from View import theme
 # Helpers de "glow" (resplandor) usando superficies con alpha en capas
 # --------------------------------------------------------------------- #
 def draw_glow_line(surface, color, start, end, width, glow_layers=4, max_extra=10):
-    """Dibuja una línea con halo de luz: varias líneas semitransparentes
-    cada vez más anchas debajo de la línea nítida final."""
     x1, y1 = start
     x2, y2 = end
     for i in range(glow_layers, 0, -1):
@@ -25,7 +23,6 @@ def draw_glow_line(surface, color, start, end, width, glow_layers=4, max_extra=1
 
 
 def draw_glow_circle(surface, color, center, radius, width=0, glow_layers=5, max_extra=14):
-    """Dibuja un círculo (relleno o contorno) con halo de luz alrededor."""
     for i in range(glow_layers, 0, -1):
         alpha = int(50 * (i / glow_layers))
         extra = int(max_extra * (i / glow_layers))
@@ -38,8 +35,6 @@ def draw_glow_circle(surface, color, center, radius, width=0, glow_layers=5, max
 
 
 def draw_glow_text(surface, font, text, color, center, glow_color=None, glow_radius=6):
-    """Renderiza texto con un leve halo detrás (varias copias desplazadas
-    con transparencia) para dar sensación de luz de neón."""
     glow_color = glow_color or color
     base = font.render(text, True, color)
     rect = base.get_rect(center=center)
@@ -59,23 +54,12 @@ def draw_glow_text(surface, font, text, color, center, glow_color=None, glow_rad
     surface.blit(base, rect)
 
 
-# --------------------------------------------------------------------- #
-# Fondo de circuitos cuántico animado
-# --------------------------------------------------------------------- #
 class CircuitBackground:
-    """
-    Genera una red de líneas tipo 'circuito impreso' sobre el fondo,
-    con nodos que pulsan suavemente (efecto de energía viajando por
-    las trazas) y estrellas/partículas de fondo tipo 'campo cuántico'.
-    """
-
     def __init__(self, width, height, node_count=26, seed=None):
         self.width = width
         self.height = height
         rng = random.Random(seed)
 
-        # Genera nodos en una grilla ligeramente perturbada, luego
-        # conecta cada nodo con 1-2 vecinos cercanos para simular pistas.
         cols, rows = 7, 6
         self.nodes = []
         for r in range(rows):
@@ -98,7 +82,6 @@ class CircuitBackground:
                 if edge not in self.edges:
                     self.edges.append(edge)
 
-        # Pequeñas partículas de "polvo cuántico" flotando de fondo
         self.dust = [
             {
                 "x": rng.uniform(0, width),
@@ -123,16 +106,11 @@ class CircuitBackground:
     def draw(self, surface):
         surface.fill(theme.BG_DARK)
 
-        # Sutil viñeta / degradado radial simulado con círculos
-        # (barato en rendimiento, evita crear superficies nuevas cada frame)
-
-        # Trazas de circuito
         for (i, j) in self.edges:
             x1, y1 = self.nodes[i]
             x2, y2 = self.nodes[j]
             pygame.draw.line(surface, theme.CYAN_DIM, (x1, y1), (x2, y2), 1)
 
-        # Pulso de energía viajando por algunas trazas
         pulse_edges = self.edges[:: max(1, len(self.edges) // 10)]
         for (i, j) in pulse_edges:
             x1, y1 = self.nodes[i]
@@ -142,7 +120,6 @@ class CircuitBackground:
             py = y1 + (y2 - y1) * t
             pygame.draw.circle(surface, theme.CYAN, (int(px), int(py)), 2)
 
-        # Nodos con leve pulso de brillo
         for idx, (x, y) in enumerate(self.nodes):
             pulse = (math.sin(self.time * 2 + idx) + 1) / 2
             radius = 2 + pulse * 1.5
@@ -151,7 +128,6 @@ class CircuitBackground:
             pygame.draw.circle(node_surf, (*theme.CYAN, alpha), (5, 5), radius)
             surface.blit(node_surf, (x - 5, y - 5))
 
-        # Polvo cuántico
         for d in self.dust:
             tw = (math.sin(self.time * 3 + d["phase"]) + 1) / 2
             alpha = int(40 + tw * 90)
@@ -160,9 +136,6 @@ class CircuitBackground:
             surface.blit(dust_surf, (d["x"] - 3, d["y"] - 3))
 
 
-# --------------------------------------------------------------------- #
-# Sistema de partículas para "explosión" cuántica al colocar una ficha
-# --------------------------------------------------------------------- #
 class Particle:
     __slots__ = ("x", "y", "vx", "vy", "life", "max_life", "color", "radius")
 
