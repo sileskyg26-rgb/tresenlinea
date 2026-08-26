@@ -1,6 +1,5 @@
 from Model.IGameRule import IGameRule
 
-
 class VictoryVerifier(IGameRule):
     def verify(self, board) -> bool:
         cells = board.get_cells()
@@ -24,7 +23,3 @@ class VictoryVerifier(IGameRule):
             return True
 
         return False
-
-    # Backwards-compatible Spanish alias
-    def verificar(self, board):
-        return self.verify(board)

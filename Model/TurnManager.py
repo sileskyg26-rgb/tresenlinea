@@ -1,5 +1,5 @@
 class TurnManager:
-    # Constructor 
+    # Constructor
     def __init__(self, players):
         self._players = players
         self._current_turn = 0
@@ -15,7 +15,6 @@ class TurnManager:
     def get_current_turn(self):
         return self._current_turn
 
-    # English-friendly API
     def get_current_player(self):
         return self._players[self._current_turn]
 
@@ -31,16 +30,5 @@ class TurnManager:
         self._current_turn = (self._current_turn + 1) % len(self._players)
 
     def reset(self):
-        # Resets the turn back to the first player
         self._current_turn = 0
         print("Turns have been reset.")
-
-    # Backwards-compatible Spanish aliases (deprecated)
-    def obtenerJugadorActual(self):
-        return self.get_current_player()
-
-    def siguienteTurno(self):
-        return self.next_turn()
-
-    def reiniciar(self):
-        return self.reset()
