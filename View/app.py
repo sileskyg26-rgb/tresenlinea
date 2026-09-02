@@ -45,8 +45,6 @@ def find_winning_line(board):
         if symbols[0] is not None and symbols[0] == symbols[1] == symbols[2]:
             return line
     return None
-
-
 class TicTacToeApp:
     def __init__(self):
         pygame.init()
