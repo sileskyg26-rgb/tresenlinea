@@ -19,10 +19,6 @@ from Model.InvalidMoveException import InvalidMoveException  # noqa: F401
 
 BOT_MOVE_DELAY_SECONDS = 0.8
 
-
-# --------------------------------------------------------------------------- #
-# Board rendering (attached to Board since Board.py has no __str__)
-# --------------------------------------------------------------------------- #
 def _board_to_string(self: Board) -> str:
     cells = self.get_cells()
     col_header = "     0   1   2"
@@ -40,10 +36,6 @@ def _board_to_string(self: Board) -> str:
 
 Board.__str__ = _board_to_string
 
-
-# --------------------------------------------------------------------------- #
-# Small CLI helpers
-# --------------------------------------------------------------------------- #
 def clear_screen():
     os.system("cls" if os.name == "nt" else "clear")
 
@@ -71,10 +63,6 @@ def prompt_int(message, valid_values):
             return int(raw)
         print(f"Invalid input. Please enter one of: {valid_values}")
 
-
-# --------------------------------------------------------------------------- #
-# Player / game setup
-# --------------------------------------------------------------------------- #
 def build_players(mode: str, human_goes_first: bool = True):
     """
     mode: "hh" (human vs human), "hb" (human vs bot), "bb" (bot vs bot)
@@ -114,10 +102,6 @@ def build_game_components(players):
     )
     return board, turn_manager, history, game_manager
 
-
-# --------------------------------------------------------------------------- #
-# Game loop
-# --------------------------------------------------------------------------- #
 def play(players, bot_vs_bot: bool = False):
     board, turn_manager, history, game_manager = build_game_components(players)
 
@@ -190,10 +174,6 @@ def play(players, bot_vs_bot: bool = False):
     game_manager.finish()
     input("\nPress Enter to return to the main menu...")
 
-
-# --------------------------------------------------------------------------- #
-# Menu flows
-# --------------------------------------------------------------------------- #
 def human_vs_human():
     players = build_players("hh")
     play(players, bot_vs_bot=False)

@@ -2,7 +2,7 @@ import math
 
 import pygame
 
-from View import theme
+from View import Theme
 from View.effects import draw_glow_text
 
 
@@ -11,7 +11,7 @@ class NeonButton:
         self.rect = pygame.Rect(rect)
         self.text = text
         self.on_click = on_click
-        self.accent = accent or theme.CYAN
+        self.accent = accent or Theme.CYAN
         self.hovered = False
         self.enabled = True
         self._pulse = 0.0
@@ -42,7 +42,7 @@ class NeonButton:
         ]
 
     def draw(self, surface):
-        color = self.accent if self.enabled else theme.TEXT_DIM
+        color = self.accent if self.enabled else Theme.TEXT_DIM
         points = self._chamfered_points(self.rect)
 
         panel = pygame.Surface(self.rect.size, pygame.SRCALPHA)
@@ -67,8 +67,8 @@ class NeonButton:
         pygame.draw.line(surface, color, (x + tick, y), (x, y + tick), 1)
         pygame.draw.line(surface, color, (x + w - tick, y + h), (x + w, y + h - tick), 1)
 
-        text_color = theme.TEXT_PRIMARY if self.enabled else theme.TEXT_DIM
-        font = theme.font_button(24)
+        text_color = Theme.TEXT_PRIMARY if self.enabled else Theme.TEXT_DIM
+        font = Theme.font_button(24)
         if self.hovered:
             draw_glow_text(surface, font, self.text, text_color, self.rect.center, glow_color=color)
         else:

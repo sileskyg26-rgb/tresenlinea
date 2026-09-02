@@ -2,7 +2,7 @@ import math
 
 import pygame
 
-from View import theme
+from View import Theme
 from View.effects import draw_glow_line, draw_glow_circle
 
 SYMBOL_APPEAR_TIME = 0.28  # segundos que tarda una ficha en "materializarse"
@@ -37,16 +37,16 @@ class BoardView:
         r = self.rect
         # Panel de fondo del tablero, ligeramente más oscuro que el resto
         panel = pygame.Surface(r.size, pygame.SRCALPHA)
-        pygame.draw.rect(panel, (*theme.BG_DARKER, 160), panel.get_rect(), border_radius=10)
+        pygame.draw.rect(panel, (*Theme.BG_DARKER, 160), panel.get_rect(), border_radius=10)
         surface.blit(panel, r.topleft)
 
         for i in (1, 2):
             x = r.x + i * self.cell
-            draw_glow_line(surface, theme.CYAN, (x, r.y + 6), (x, r.bottom - 6), 2, glow_layers=3, max_extra=8)
+            draw_glow_line(surface, Theme.CYAN, (x, r.y + 6), (x, r.bottom - 6), 2, glow_layers=3, max_extra=8)
             y = r.y + i * self.cell
-            draw_glow_line(surface, theme.CYAN, (r.x + 6, y), (r.right - 6, y), 2, glow_layers=3, max_extra=8)
+            draw_glow_line(surface, Theme.CYAN, (r.x + 6, y), (r.right - 6, y), 2, glow_layers=3, max_extra=8)
 
-        pygame.draw.rect(surface, theme.CYAN_SOFT, r, width=2, border_radius=10)
+        pygame.draw.rect(surface, Theme.CYAN_SOFT, r, width=2, border_radius=10)
         corner = 16
         for cx, cy, dx, dy in [
             (r.left, r.top, 1, 1),
@@ -54,21 +54,21 @@ class BoardView:
             (r.left, r.bottom, 1, -1),
             (r.right, r.bottom, -1, -1),
         ]:
-            pygame.draw.line(surface, theme.CYAN, (cx, cy), (cx + dx * corner, cy), 3)
-            pygame.draw.line(surface, theme.CYAN, (cx, cy), (cx, cy + dy * corner), 3)
+            pygame.draw.line(surface, Theme.CYAN, (cx, cy), (cx + dx * corner, cy), 3)
+            pygame.draw.line(surface, Theme.CYAN, (cx, cy), (cx, cy + dy * corner), 3)
 
         for i in (1, 2):
             for j in (1, 2):
                 x = r.x + i * self.cell
                 y = r.y + j * self.cell
                 pulse = (math.sin(time_elapsed * 3 + i + j) + 1) / 2
-                draw_glow_circle(surface, theme.CYAN, (x, y), 3 + int(pulse * 2), glow_layers=3, max_extra=6)
+                draw_glow_circle(surface, Theme.CYAN, (x, y), 3 + int(pulse * 2), glow_layers=3, max_extra=6)
 
     def draw_cell_hover(self, surface, row, col):
         rect = self.cell_rect(row, col)
         hover_surf = pygame.Surface(rect.size, pygame.SRCALPHA)
-        pygame.draw.rect(hover_surf, (*theme.CYAN, 30), hover_surf.get_rect(), border_radius=6)
-        pygame.draw.rect(hover_surf, (*theme.CYAN, 120), hover_surf.get_rect(), width=2, border_radius=6)
+        pygame.draw.rect(hover_surf, (*Theme.CYAN, 30), hover_surf.get_rect(), border_radius=6)
+        pygame.draw.rect(hover_surf, (*Theme.CYAN, 120), hover_surf.get_rect(), width=2, border_radius=6)
         surface.blit(hover_surf, rect.topleft)
 
     def draw_symbol(self, surface, row, col, symbol_str, appear_elapsed):
@@ -94,15 +94,15 @@ class BoardView:
 
         temp = pygame.Surface(surface.get_size(), pygame.SRCALPHA)
         draw_glow_line(
-            temp, theme.CYAN, (cx - half, cy - half), (cx + half, cy + half),
+            temp, Theme.CYAN, (cx - half, cy - half), (cx + half, cy + half),
             thickness, glow_layers=5, max_extra=16,
         )
         draw_glow_line(
-            temp, theme.CYAN, (cx + half, cy - half), (cx - half, cy + half),
+            temp, Theme.CYAN, (cx + half, cy - half), (cx - half, cy + half),
             thickness, glow_layers=5, max_extra=16,
         )
-        pygame.draw.line(temp, theme.WHITE_GLOW, (cx - half, cy - half), (cx + half, cy + half), max(1, thickness - 3))
-        pygame.draw.line(temp, theme.WHITE_GLOW, (cx + half, cy - half), (cx - half, cy + half), max(1, thickness - 3))
+        pygame.draw.line(temp, Theme.WHITE_GLOW, (cx - half, cy - half), (cx + half, cy + half), max(1, thickness - 3))
+        pygame.draw.line(temp, Theme.WHITE_GLOW, (cx + half, cy - half), (cx - half, cy + half), max(1, thickness - 3))
 
         temp.set_alpha(int(255 * alpha_fade))
         surface.blit(temp, (0, 0))
@@ -112,9 +112,9 @@ class BoardView:
         thickness = max(3, int(size * 0.14))
 
         temp = pygame.Surface(surface.get_size(), pygame.SRCALPHA)
-        draw_glow_circle(temp, theme.BLUE_RING, center, radius, width=thickness, glow_layers=5, max_extra=18)
+        draw_glow_circle(temp, Theme.BLUE_RING, center, radius, width=thickness, glow_layers=5, max_extra=18)
         # anillo interior blanco brillante, más fino, para el "núcleo" de luz
-        pygame.draw.circle(temp, theme.WHITE_GLOW, center, radius - thickness // 3, width=max(1, thickness - 4))
+        pygame.draw.circle(temp, Theme.WHITE_GLOW, center, radius - thickness // 3, width=max(1, thickness - 4))
 
         temp.set_alpha(int(255 * alpha_fade))
         surface.blit(temp, (0, 0))
@@ -130,4 +130,4 @@ class BoardView:
 
         pulse = (math.sin(time_elapsed * 6) + 1) / 2
         width = 4 + int(pulse * 3)
-        draw_glow_line(surface, theme.WIN_GOLD, start, end, width, glow_layers=6, max_extra=20)
+        draw_glow_line(surface, Theme.WIN_GOLD, start, end, width, glow_layers=6, max_extra=20)

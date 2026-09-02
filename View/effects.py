@@ -3,7 +3,7 @@ import random
 
 import pygame
 
-from View import theme
+from View import Theme
 
 
 # --------------------------------------------------------------------- #
@@ -104,12 +104,12 @@ class CircuitBackground:
                 d["x"] = random.uniform(0, self.width)
 
     def draw(self, surface):
-        surface.fill(theme.BG_DARK)
+        surface.fill(Theme.BG_DARK)
 
         for (i, j) in self.edges:
             x1, y1 = self.nodes[i]
             x2, y2 = self.nodes[j]
-            pygame.draw.line(surface, theme.CYAN_DIM, (x1, y1), (x2, y2), 1)
+            pygame.draw.line(surface, Theme.CYAN_DIM, (x1, y1), (x2, y2), 1)
 
         pulse_edges = self.edges[:: max(1, len(self.edges) // 10)]
         for (i, j) in pulse_edges:
@@ -118,21 +118,21 @@ class CircuitBackground:
             t = (math.sin(self.time * 1.5 + i * 0.7) + 1) / 2
             px = x1 + (x2 - x1) * t
             py = y1 + (y2 - y1) * t
-            pygame.draw.circle(surface, theme.CYAN, (int(px), int(py)), 2)
+            pygame.draw.circle(surface, Theme.CYAN, (int(px), int(py)), 2)
 
         for idx, (x, y) in enumerate(self.nodes):
             pulse = (math.sin(self.time * 2 + idx) + 1) / 2
             radius = 2 + pulse * 1.5
             alpha = 60 + int(pulse * 90)
             node_surf = pygame.Surface((10, 10), pygame.SRCALPHA)
-            pygame.draw.circle(node_surf, (*theme.CYAN, alpha), (5, 5), radius)
+            pygame.draw.circle(node_surf, (*Theme.CYAN, alpha), (5, 5), radius)
             surface.blit(node_surf, (x - 5, y - 5))
 
         for d in self.dust:
             tw = (math.sin(self.time * 3 + d["phase"]) + 1) / 2
             alpha = int(40 + tw * 90)
             dust_surf = pygame.Surface((6, 6), pygame.SRCALPHA)
-            pygame.draw.circle(dust_surf, (*theme.WHITE_GLOW, alpha), (3, 3), d["r"])
+            pygame.draw.circle(dust_surf, (*Theme.WHITE_GLOW, alpha), (3, 3), d["r"])
             surface.blit(dust_surf, (d["x"] - 3, d["y"] - 3))
 
 

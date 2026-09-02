@@ -13,9 +13,9 @@ from Model.DrawVerifier import DrawVerifier
 from Model.HumanStrategy import HumanStrategy
 from Model.BotStrategy import BotStrategy
 
-from View import theme
+from View import Theme      
 from View.effects import CircuitBackground, ParticleSystem, draw_glow_text
-from View.widgets import NeonButton
+from View.Widgets import NeonButton
 from View.board_view import BoardView, SYMBOL_APPEAR_TIME
 
 
@@ -51,10 +51,10 @@ class TicTacToeApp:
     def __init__(self):
         pygame.init()
         pygame.display.set_caption("TIC-TAC-TOE // QUANTUM GRID")
-        self.screen = pygame.display.set_mode((theme.WINDOW_WIDTH, theme.WINDOW_HEIGHT))
+        self.screen = pygame.display.set_mode((Theme.WINDOW_WIDTH, Theme.WINDOW_HEIGHT))
         self.clock = pygame.time.Clock()
 
-        self.background = CircuitBackground(theme.WINDOW_WIDTH, theme.WINDOW_HEIGHT, seed=7)
+        self.background = CircuitBackground(Theme.WINDOW_WIDTH, Theme.WINDOW_HEIGHT, seed=7)
         self.particles = ParticleSystem()
 
         self.time_elapsed = 0.0
@@ -78,11 +78,8 @@ class TicTacToeApp:
 
         self._build_menu()
 
-    # ------------------------------------------------------------------ #
-    # Construcción de menús
-    # ------------------------------------------------------------------ #
     def _build_menu(self):
-        cx = theme.WINDOW_WIDTH // 2
+        cx = Theme.WINDOW_WIDTH // 2
         w, h, gap = 340, 56, 20
         start_y = 300
         self.menu_buttons = [
@@ -105,7 +102,7 @@ class TicTacToeApp:
                 (cx - w // 2, start_y + 3 * (h + gap), w, h),
                 "SALIR",
                 on_click=self._quit,
-                accent=theme.DANGER,
+                accent=Theme.DANGER,
             ),
         ]
 
@@ -124,13 +121,13 @@ class TicTacToeApp:
                 (cx - w // 2, start_y + 2 * (h + gap), w, h),
                 "VOLVER",
                 on_click=self._go_menu,
-                accent=theme.MAGENTA_ACCENT,
+                accent=Theme.MAGENTA_ACCENT,
             ),
         ]
 
         self.game_over_buttons = [
             NeonButton((cx - 190, 600, 180, 50), "REVANCHA", on_click=self._rematch),
-            NeonButton((cx + 10, 600, 180, 50), "MENU", on_click=self._go_menu, accent=theme.MAGENTA_ACCENT),
+            NeonButton((cx + 10, 600, 180, 50), "MENU", on_click=self._go_menu, accent=Theme.MAGENTA_ACCENT),
         ]
 
     def _go_menu(self):
@@ -143,9 +140,6 @@ class TicTacToeApp:
     def _quit(self):
         self.running = False
 
-    # ------------------------------------------------------------------ #
-    # Configuración de partida (equivalente a build_players / build_game_components)
-    # ------------------------------------------------------------------ #
     def _build_players(self, mode, human_first=True):
         symbol_x = Symbol("X")
         symbol_o = Symbol("O")
@@ -193,9 +187,9 @@ class TicTacToeApp:
         self.history.clear_history()
         self.game_manager.start_match()
 
-        board_x = (theme.WINDOW_WIDTH - theme.BOARD_SIZE) // 2
-        board_y = theme.BOARD_MARGIN_TOP
-        self.board_view = BoardView((board_x, board_y, theme.BOARD_SIZE, theme.BOARD_SIZE))
+        board_x = (Theme.WINDOW_WIDTH - Theme.BOARD_SIZE) // 2
+        board_y = Theme.BOARD_MARGIN_TOP
+        self.board_view = BoardView((board_x, board_y, Theme.BOARD_SIZE, Theme.BOARD_SIZE))
 
         self.symbol_appear_times = {}
         self.winning_line = None
@@ -205,13 +199,10 @@ class TicTacToeApp:
     def _schedule_bot_if_needed(self):
         current = self.turn_manager.get_current_player()
         if isinstance(current.get_strategy(), BotStrategy):
-            self.bot_move_deadline = time.time() + theme.BOT_MOVE_DELAY_MS / 1000.0
+            self.bot_move_deadline = time.time() + Theme.BOT_MOVE_DELAY_MS / 1000.0
         else:
             self.bot_move_deadline = None
 
-    # ------------------------------------------------------------------ #
-    # Colocar una jugada (usado tanto por clic humano como por el bot)
-    # ------------------------------------------------------------------ #
     def _apply_move(self, row, col):
         current_player = self.turn_manager.get_current_player()
         placed = self.board.place_symbol(row, col, current_player.get_symbol())
@@ -222,7 +213,7 @@ class TicTacToeApp:
         self.history.add_match((current_player.get_name(), row, col))
 
         cell_rect = self.board_view.cell_rect(row, col)
-        color = theme.CYAN if str(current_player.get_symbol()) == "X" else theme.BLUE_RING
+        color = Theme.CYAN if str(current_player.get_symbol()) == "X" else Theme.BLUE_RING
         self.particles.burst(*cell_rect.center, color, count=30)
 
         if self.game_manager.update_state(self.board):
@@ -268,12 +259,9 @@ class TicTacToeApp:
         row, col = movement
         self._apply_move(row, col)
 
-    # ------------------------------------------------------------------ #
-    # Bucle principal
-    # ------------------------------------------------------------------ #
     def run(self):
         while self.running:
-            dt = self.clock.tick(theme.FPS) / 1000.0
+            dt = self.clock.tick(Theme.FPS) / 1000.0
             self.time_elapsed += dt
             self._handle_events()
             self._update(dt)
@@ -332,10 +320,7 @@ class TicTacToeApp:
 
         if self.state == STATE_PLAYING:
             self._maybe_run_bot()
-
-    # ------------------------------------------------------------------ #
-    # Dibujo
-    # ------------------------------------------------------------------ #
+ 
     def _draw(self):
         self.background.draw(self.screen)
 
@@ -365,25 +350,25 @@ class TicTacToeApp:
 
     def _draw_title(self, text):
         draw_glow_text(
-            self.screen, theme.font_title(52), text, theme.TEXT_PRIMARY,
-            (theme.WINDOW_WIDTH // 2, 130), glow_color=theme.CYAN,
+            self.screen, Theme.font_title(52), text, Theme.TEXT_PRIMARY,
+            (Theme.WINDOW_WIDTH // 2, 130), glow_color=Theme.CYAN,
         )
 
     def _draw_subtitle(self, text):
-        font = theme.font_hud(20)
-        label = font.render(text, True, theme.TEXT_DIM)
-        rect = label.get_rect(center=(theme.WINDOW_WIDTH // 2, 190))
+        font = Theme.font_hud(20)
+        label = font.render(text, True, Theme.TEXT_DIM)
+        rect = label.get_rect(center=(Theme.WINDOW_WIDTH // 2, 190))
         self.screen.blit(label, rect)
 
     def _draw_game_hud(self):
         current_player = self.turn_manager.get_current_player()
         turn_text = f"TURNO: {current_player.get_name()} [{current_player.get_symbol()}]"
         draw_glow_text(
-            self.screen, theme.font_hud(26), turn_text, theme.TEXT_PRIMARY,
-            (theme.WINDOW_WIDTH // 2, 70), glow_color=theme.CYAN,
+            self.screen, Theme.font_hud(26), turn_text, Theme.TEXT_PRIMARY,
+            (Theme.WINDOW_WIDTH // 2, 70), glow_color=Theme.CYAN,
         )
-        hint_font = theme.font_hud(16)
-        hint = hint_font.render("ESC: MENU", True, theme.TEXT_DIM)
+        hint_font = Theme.font_hud(16)
+        hint = hint_font.render("ESC: MENU", True, Theme.TEXT_DIM)
         self.screen.blit(hint, (16, 16))
 
     def _draw_board(self):
@@ -413,12 +398,12 @@ class TicTacToeApp:
             self.board_view.draw_winning_line(self.screen, self.winning_line, self.time_elapsed)
 
     def _draw_game_over_overlay(self):
-        overlay = pygame.Surface((theme.WINDOW_WIDTH, 130), pygame.SRCALPHA)
-        pygame.draw.rect(overlay, (*theme.BG_DARKER, 210), overlay.get_rect())
+        overlay = pygame.Surface((Theme.WINDOW_WIDTH, 130), pygame.SRCALPHA)
+        pygame.draw.rect(overlay, (*Theme.BG_DARKER, 210), overlay.get_rect())
         self.screen.blit(overlay, (0, 40))
 
-        color = theme.WIN_GOLD if "GANA" in self.status_message else theme.DRAW_PURPLE
+        color = Theme.WIN_GOLD if "GANA" in self.status_message else Theme.DRAW_PURPLE
         draw_glow_text(
-            self.screen, theme.font_title(40), self.status_message, theme.TEXT_PRIMARY,
-            (theme.WINDOW_WIDTH // 2, 95), glow_color=color,
+            self.screen, Theme.font_title(40), self.status_message, Theme.TEXT_PRIMARY,
+            (Theme.WINDOW_WIDTH // 2, 95), glow_color=color,
         )

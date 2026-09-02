@@ -1,4 +1,4 @@
-from View.app import TicTacToeApp
+from View.App import TicTacToeApp
 def main():
     app = TicTacToeApp()
     app.run()
