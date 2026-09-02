@@ -1,13 +1,13 @@
 import pygame
 
-BG_DARK = (10, 22, 40)          # #0a1628 - fondo azul marino oscuro
-BG_DARKER = (6, 14, 28)         # variante aún más oscura (para paneles)
-CYAN = (0, 217, 255)            # #00d9ff - cian brillante (circuitos / X)
+BG_DARK = (10, 22, 40)           
+BG_DARKER = (6, 14, 28)          
+CYAN = (0, 217, 255)             
 CYAN_SOFT = (0, 150, 200)
 CYAN_DIM = (0, 90, 130)
-WHITE_GLOW = (210, 240, 255)    # blanco azulado (O)
-BLUE_RING = (90, 180, 255)      # anillo azul de la O
-MAGENTA_ACCENT = (200, 60, 255) # acento cuántico secundario (hover / warnings)
+WHITE_GLOW = (210, 240, 255)     
+BLUE_RING = (90, 180, 255)       
+MAGENTA_ACCENT = (200, 60, 255)  
 GRID_LINE = (0, 160, 210)
 TEXT_PRIMARY = (200, 235, 255)
 TEXT_DIM = (90, 140, 170)
